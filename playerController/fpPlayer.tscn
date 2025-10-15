@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://b63w4rs25qbfo"]
+
+[ext_resource type="Script" uid="uid://dnauwwru0vc7e" path="res://playerController/scripts/fpController.cs" id="1_jc3a2"]
+[ext_resource type="Shader" uid="uid://d1lesep8kdhnu" path="res://playerController/scripts/dotCrosshair.gdshader" id="2_rlkd6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rlkd6"]
+size = Vector3(1, 1.7823181, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a34f4"]
+shader = ExtResource("2_rlkd6")
+shader_parameter/crosshair_color = Color(1, 1, 1, 1)
+shader_parameter/radius = 0.05
+shader_parameter/opacity = 1.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_rlkd6"]
+
+[node name="PlayerController" type="CharacterBody3D"]
+slide_on_ceiling = false
+wall_min_slide_angle = 0.6806784
+script = ExtResource("1_jc3a2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9396423, 0)
+shape = SubResource("BoxShape3D_rlkd6")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_a34f4")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 1.7655904, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_rlkd6")

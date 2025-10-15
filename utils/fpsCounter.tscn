@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2w056oii4eik"]
+
+[ext_resource type="Script" path="res://utils/fpsLabel.cs" id="1_uq0k5"]
+
+[sub_resource type="SystemFont" id="SystemFont_u71br"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xmium"]
+font = SubResource("SystemFont_u71br")
+font_size = 11
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+label_settings = SubResource("LabelSettings_xmium")
+script = ExtResource("1_uq0k5")
