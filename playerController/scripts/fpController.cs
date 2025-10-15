@@ -4,13 +4,13 @@ using System;
 public partial class fpController : CharacterBody3D
 {
     [Export] public float MoveSpeed = 9.0f;
-    [Export] public float AirAcceleration = 7.0f; //better feeling ?
-    [Export] public float GroundAcceleration = 14.0f;
+    [Export] public float GroundAcceleration = 10.0f;
     [Export] public float Friction = 7.0f;
     [Export] public float JumpForce = 12.0f;
     [Export] public float Gravity = -20.0f; //velocity y is negative like what did i think
     [Export] public float MouseSensitivity = 0.001f;
 
+    private AnimationPlayer _camAnimation;
     private Vector3 _velocity = Vector3.Zero;
     private Node3D _cameraPivot;
     private Camera3D _camera;
@@ -62,10 +62,9 @@ public partial class fpController : CharacterBody3D
         bool grounded = IsOnFloor();
 
         if (grounded)
-            GroundMovement(dir, delta);
-        else
-            AirMovement(dir, delta);
-
+        {
+            Movement(dir, delta);
+        }
         _velocity.Y += Gravity * (float)delta;
         Velocity = _velocity;
         MoveAndSlide();
@@ -85,10 +84,12 @@ public partial class fpController : CharacterBody3D
         return dir.Length() > 0.001f ? dir.Normalized() : Vector3.Zero;
     }
 
-    private void GroundMovement(Vector3 wishDir, double delta)
+    private void Movement(Vector3 dir, double delta)
     {
+
         Vector3 horiz = _velocity; horiz.Y = 0;
         float speed = horiz.Length();
+
         if (speed > 0.001f)
         {
             float speedDrop = speed * Friction * (float)delta;
@@ -98,8 +99,8 @@ public partial class fpController : CharacterBody3D
             _velocity.Z = horiz.Z;
         }
 
-        if (wishDir != Vector3.Zero)
-            Accelerate(wishDir, MoveSpeed, GroundAcceleration, delta);
+        if (dir != Vector3.Zero)
+            Accelerate(dir, MoveSpeed, GroundAcceleration, delta);
 
         if (Input.IsActionJustPressed("jump"))
         {
@@ -109,27 +110,27 @@ public partial class fpController : CharacterBody3D
         {
             _velocity.Y = -2f;
         }
-    }
-
-    private void AirMovement(Vector3 dir, double delta)
-    {
-        if (dir != Vector3.Zero)
-        {
-            Accelerate(dir, MoveSpeed, AirAcceleration, delta);
-        }
         _velocity.Y += Gravity * (float)delta;
-
     }
 
     private void Accelerate(Vector3 dir, float speed, float accel, double delta)
     {
-        if (dir == Vector3.Zero) return;
+        if (dir == Vector3.Zero)
+        {
+            return;
+        }
         float currentSpeed = _velocity.Dot(dir);
         float addSpeed = speed - currentSpeed;
-        if (addSpeed <= 0) return;
 
+        if (addSpeed <= 0)
+        {
+            return;
+        }
         float accelSpeed = accel * (float)delta * speed;
-        if (accelSpeed > addSpeed) accelSpeed = addSpeed;
+        if (accelSpeed > addSpeed)
+        {
+            accelSpeed = addSpeed;
+        }
         _velocity += dir * accelSpeed;
     }
 }
