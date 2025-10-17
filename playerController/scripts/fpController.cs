@@ -5,9 +5,9 @@ public partial class fpController : CharacterBody3D
 {
     [Export] public float MoveSpeed = 9.0f;
     [Export] public float GroundAcceleration = 10.0f;
-    [Export] public float Friction = 7.0f;
+    [Export] public float Friction = 9.0f;
     [Export] public float JumpForce = 12.0f;
-    [Export] public float Gravity = -20.0f; //velocity y is negative like what did i think
+    [Export] public float Gravity = -20.0f;
     [Export] public float MouseSensitivity = 0.001f;
 
     private AnimationPlayer _camAnimation;
@@ -36,7 +36,7 @@ public partial class fpController : CharacterBody3D
         {
             _yaw -= motion.Relative.X * MouseSensitivity;
             _pitch -= motion.Relative.Y * MouseSensitivity;
-            _pitch = Mathf.Clamp(_pitch, Mathf.DegToRad(-85.0f), Mathf.DegToRad(85.0f));
+            _pitch = Mathf.Clamp(_pitch, Mathf.DegToRad(-85.0f), Mathf.DegToRad(85.0f)); //clamp pitch so its not - and + 90deg
 
             Rotation = new Vector3(0, _yaw, 0);
             _cameraPivot.Rotation = new Vector3(_pitch, 0, 0);
@@ -83,7 +83,7 @@ public partial class fpController : CharacterBody3D
         dir.Y = 0;
         return dir.Length() > 0.001f ? dir.Normalized() : Vector3.Zero;
     }
-
+//forget about the reuse of "dir" i didnt have other names in mind
     private void Movement(Vector3 dir, double delta)
     {
 
